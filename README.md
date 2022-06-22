@@ -1,6 +1,12 @@
 # IPington, the Discord bot
 
-IPington is a Discord bot for automating a self-hosted Minecraft server running on Linux.
+IPington is a simple Discord bot for automating remote management of a self-hosted Minecraft server running on Linux.
+
+Through a private channel members can send commands to the bot to:
+ - Check the Minecraft version currently running on the server
+ - Check if the server is currently running
+ - Start the server if it is not currently running
+ - Leak the current server IP and port number
 
 ## Setup
 IPington requires Python 3 to run.

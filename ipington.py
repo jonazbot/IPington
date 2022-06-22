@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-IPington, a Discord bot for automating a self-hosted Minecraft server running on Linux.
-"""
-
 import os
 import subprocess
 import urllib.request
@@ -13,6 +9,30 @@ from discord.ext import commands
 
 
 class IPington(commands.Bot):
+    """
+    IPington, a Discord bot for automating a self-hosted Minecraft server running on Linux.
+
+    This class is a subclass of :class:`discord.commands.Bot`.
+
+    Attributes
+    -----------
+    command_prefix
+        The command prefix is the string any message intended as a command must start with
+        for the bot to execute the following message as a command.
+            Example: '!'
+    server_version
+        The version of the server IPington is managing.
+            Example: '1.18.1'
+    path_to_server
+        The full path to the top-level directory containing the server files.
+    path_to_jar
+        The relative or full path to the `minecraft_server.jar`.
+    server_port
+        The port number used to connect to the server.
+
+
+
+    """
     def __init__(self,
                  command_prefix: str,
                  server_version: str,
@@ -25,19 +45,37 @@ class IPington(commands.Bot):
         self.jar_path = path_to_jar
         self.server_port = server_port
         super(IPington, self).__init__(command_prefix=self.prefix)
-        self.add_cog(Cmd(self))
+        self.add_cog(Functions(self))
 
 
-class Cmd(commands.Cog):
-    def __init__(self, bot):
+class Functions(commands.Cog):
+    """
+    Functions, or commands, for IPington to invoke on messages that contain
+    the correct prefix followed by a keyword matching names of methods defined
+    in this class.
+
+    This class is a subclass of :class:`discord.commands.Cog`.
+
+    Attributes
+    -----------
+    bot
+        The bot is the :class: `discord.commands.Bot` or subclass
+    """
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @staticmethod
-    def get_server_ip() -> str:
+    def find_server_ip() -> str:
+        """
+        Find the current server IP address.
+        """
         return urllib.request.urlopen('https://ident.me').read().decode('utf8')
 
     @staticmethod
     def is_server_running():
+        """
+        Check if the server is currently running.
+        """
         if os.name == 'posix' and len(os.popen('pgrep -f minecraft_server').read().split('\n')[1]) > 0:
             return True
         return False
@@ -56,9 +94,11 @@ class Cmd(commands.Cog):
 
     @commands.command(name='IP')
     async def ip(self, ctx):
-        """ Ask IPington to leak the current Minecraft server IP. """
+        """
+        Ask IPington to leak the current Minecraft server IP.
+        """
         try:
-            await ctx.send(f'Minecraft server address:\n{self.get_server_ip()}:{bot.server_port}')
+            await ctx.send(f'Minecraft server address:\n{self.find_server_ip()}:{bot.server_port}')
         except Exception as e:
             await ctx.send('IP service is currently not available.')
             import traceback
@@ -73,7 +113,12 @@ class Cmd(commands.Cog):
 
     @commands.command(name='Minecraft')
     async def minecraft(self, ctx):
-        """ Check if the Minecraft server is running and start it if it is not. """
+        """
+        Start the minecraft server.
+
+            .. note:: The bot will only start the server after determining that
+            it is not currently running.
+        """
         if self.is_server_running():
             await ctx.send('Minecraft server is already running.')
         else:
@@ -84,7 +129,7 @@ class Cmd(commands.Cog):
                     f' && nohup java - Xms2G - Xmx8G - jar {bot.jar_path}'
                     ' & > / dev / null &',
                     shell=True)
-                await ctx.send(f'Minecraft server is ready @ {self.get_server_ip()}')
+                await ctx.send(f'Minecraft server is ready @ {self.find_server_ip()}')
             except Exception as e:
                 print(f'Failed to start Minecraft server!\n{e}')
                 await ctx.send('Failed to start Minecraft server!')

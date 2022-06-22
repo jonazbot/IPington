@@ -137,7 +137,7 @@ class Functions(commands.Cog):
 
 if __name__ == '__main__':
     # Load .conf as `dict`.
-    config = dotenv_values('.env.conf')  # TODO: Replace `.env.conf` with `.conf`
+    config = dotenv_values('.conf')
 
     # Setup IPington.
     bot: IPington = IPington(command_prefix=config['PREFIX'],

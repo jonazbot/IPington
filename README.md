@@ -26,7 +26,7 @@ PATH_TO_JAR=minecraft_server.${MINECRAFT_VERSION}.jar
 
 # Bot settings
 PREFIX=!
-TOKEN=T1$is@SaMPleD1$C0RDTok3n.1tSh0ulDbeEx4ctLy59[hAr@ct3rS.LoN6
+TOKEN=H3R3I$AS@mP1eD1$c0rDT0k3n.1tSh0u1d8eEx4C7Ly59[hAR@CT3r$10N6
 ```
 
 ## Run IPington

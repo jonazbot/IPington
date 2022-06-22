@@ -29,9 +29,6 @@ class IPington(commands.Bot):
         The relative or full path to the `minecraft_server.jar`.
     server_port
         The port number used to connect to the server.
-
-
-
     """
     def __init__(self,
                  command_prefix: str,
@@ -59,7 +56,8 @@ class Functions(commands.Cog):
     Attributes
     -----------
     bot
-        The bot is the :class: `discord.commands.Bot` or subclass
+        The bot is the :class: `discord.commands.Bot` or any subclass (like IPington)
+        which to register this group of commands.
     """
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -114,7 +112,10 @@ class Functions(commands.Cog):
     @commands.command(name='Minecraft')
     async def minecraft(self, ctx):
         """
-        Start the minecraft server.
+        Play Minecraft.
+
+        At invocation the bot will check to see if the server is currently running and
+        proceed to start the minecraft server.
 
             .. note:: The bot will only start the server after determining that
             it is not currently running.
@@ -124,11 +125,14 @@ class Functions(commands.Cog):
         else:
             await ctx.send('Starting Minecraft server...')
             try:
+                # TODO: String building should definitely be cleaned
                 subprocess.call(
-                    f'cd {bot.server_path}'
-                    f' && nohup java - Xms2G - Xmx8G - jar {bot.jar_path}'
-                    ' & > / dev / null &',
-                    shell=True)
+                    f'cd {bot.server_path}'  # Change into server directory
+                    f' && nohup java - Xms2G - Xmx8G - jar {bot.jar_path}'  # Start the server quietly 
+                    ' & > / dev / null &',  # Direct garbage collection
+                    shell=True)  # This option carries inherent risks due to potential of code injection...
+                # ...of which I have currently done NOTHING to prevent.
+                # SecurityPatch v0.0.1: Don't let anyone tamper with your .conf file.
                 await ctx.send(f'Minecraft server is ready @ {self.find_server_ip()}')
             except Exception as e:
                 print(f'Failed to start Minecraft server!\n{e}')
@@ -136,7 +140,7 @@ class Functions(commands.Cog):
 
 
 if __name__ == '__main__':
-    # Load .conf as `dict`.
+    # Load .conf file.
     config = dotenv_values('.conf')
 
     # Setup IPington.

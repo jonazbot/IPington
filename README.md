@@ -1,6 +1,6 @@
 # IPington, the Discord bot.
 
-IPington is a Discord bot for automating a self-hosted Minecraft server running on Linux.
+IPington is a Discord bot for automating a self-hosted Minecraft server running on Linux
 
 ## Setup
 IPington requires Python 3 to run.

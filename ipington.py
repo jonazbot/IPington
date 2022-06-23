@@ -125,17 +125,20 @@ class Functions(commands.Cog):
         else:
             await ctx.send('Starting Minecraft server...')
             try:
-                # TODO: String building should definitely be cleaned
-                subprocess.call(
-                    f'cd {bot.server_path}'  # Change into server directory
-                    f' && nohup java - Xms2G - Xmx8G - jar {bot.jar_path}'  # Start the server quietly 
-                    ' & > / dev / null &',  # Direct garbage collection
-                    shell=True)  # This option carries inherent risks due to potential of code injection...
-                # ...of which I have currently done NOTHING to prevent.
-                # SecurityPatch v0.0.1: Don't let anyone tamper with your .conf file.
-                await ctx.send(f'Minecraft server is ready @ {self.find_server_ip()}')
+                if os.path.exists(bot.server_path):
+                    if os.path.exists(bot.jar_path):
+                        subprocess.call(
+                            f'cd {bot.server_path}'  # Change into the server directory
+                            f' && nohup java - Xms2G - Xmx8G - jar {bot.jar_path}'  # Start the server quietly 
+                            ' & > / dev / null &',  # Direct server output to garbage collection
+                            shell=True)  # This option introduces a code injection vulnerability to the system.
+                        await ctx.send(f'Minecraft server is ready @ {self.find_server_ip()}')
+                    else:
+                        raise FileNotFoundError
+                else:
+                    raise NotADirectoryError
             except Exception as e:
-                print(f'Failed to start Minecraft server!\n{e}')
+                print(f'\nERROR: Failed to start Minecraft server!\n{e}\n')
                 await ctx.send('Failed to start Minecraft server!')
 
 

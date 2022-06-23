@@ -30,19 +30,28 @@ class IPington(commands.Bot):
         The relative or full path to the `minecraft_server.jar`.
     server_port
         The port number used to connect to the server.
+    xms
+        The amount of memory to give the server at start
+    xmx
+        The maximum amount of memory the server is allowed
     """
     def __init__(self,
                  command_prefix: str,
                  server_version: str,
                  server_path: str,
                  server_exec: str,
-                 server_port: str):
+                 server_port: str,
+                 xms: str,
+                 xmx: str):
         super(IPington, self).__init__(command_prefix=command_prefix)
         self.minecraft_version = server_version
         self.server_path = server_path
         self.jar_path = server_exec
         self.server_port = server_port
+        self.xms = xms
+        self.xmx = xmx
         self.add_cog(Functions(self))
+        self.server_process = None
         logging.basicConfig(
             filename='ipington.log',
             level=logging.WARNING,
@@ -147,14 +156,13 @@ class Functions(commands.Cog):
             await ctx.send('Starting Minecraft server...')
             try:
                 if os.path.exists(self.bot.server_path):
-                    if os.name == 'posix':
-                        subprocess.call(
-                            f'cd {self.bot.server_path} '
-                            f'&& nohup java -Xms2G -Xmx8G -jar {self.bot.jar_path} '
-                            f'&>/dev/null & ', shell=True)
-                        await ctx.send(f'Minecraft server is ready at {self._find_server_ip()}')
-                    elif os.name == 'nt':
-                        raise OSError  # TODO: Add windows server call
+                    if os.name == 'posix' or os.name == 'nt':
+                        subprocess.Popen(
+                            f'{"nohup java" if os.name == "posix" else "java"} -Xms{self.bot.xms} -Xmx{self.bot.xms} -jar {self.bot.jar_path}',
+                            stdin=subprocess.PIPE,
+                            shell=True,
+                            cwd=self.bot.server_path)
+                        await ctx.send(f'Minecraft server is ready at ***{self._find_server_ip()}:{self.bot.server_port}***')
                     else:
                         logging.warning(f'Unable to recognize OS: {os.name}')
                         raise OSError
@@ -169,14 +177,16 @@ class Functions(commands.Cog):
 
 if __name__ == '__main__':
     # Load .conf file.
-    config = dotenv_values('.conf')
+    config = dotenv_values('.env.conf')
 
     # Setup IPington.
     ipington: IPington = IPington(command_prefix=config['PREFIX'],
                                   server_version=config['MINECRAFT_VERSION'],
                                   server_path=config['PATH_TO_SERVER'],
                                   server_exec=config['SERVER_EXEC'],
-                                  server_port=config['SERVER_PORT'])
+                                  server_port=config['SERVER_PORT'],
+                                  xms=config['XMS'],
+                                  xmx=config['XMX'])
 
     # Run IPington
     ipington.run(config['TOKEN'])

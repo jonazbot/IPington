@@ -22,6 +22,8 @@ MINECRAFT_VERSION=1.18.1
 SERVER_PORT=25565
 PATH_TO_SERVER=/path/to/server
 SERVER_EXEC=minecraft_server.${MINECRAFT_VERSION}.jar
+XMS=2G
+XMX=8G
 
 # Bot settings
 PREFIX=!

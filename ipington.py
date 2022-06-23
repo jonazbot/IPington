@@ -145,8 +145,9 @@ class Functions(commands.Cog):
                 else:
                     raise NotADirectoryError
             except Exception as e:
-                print(f'\nERROR: Failed to start Minecraft server!\n{e}\n')
                 await ctx.send('Failed to start Minecraft server!')
+                import traceback
+                traceback.print_exception(e)
 
 
 if __name__ == '__main__':

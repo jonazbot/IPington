@@ -71,13 +71,29 @@ class Functions(commands.Cog):
         """
         return urllib.request.urlopen('https://ident.me').read().decode('utf8')
 
-    @staticmethod
-    def is_server_running():
+    def _is_server_running(self):
         """
         Check if the server is currently running.
         """
-        if os.name == 'posix' and len(os.popen('pgrep -f minecraft_server').read().split('\n')[1]) > 0:
+        if self._is_process_running('minecraft_server'):
             return True
+        return False
+
+    def _is_process_running(self, process_name: str) -> bool:
+        """
+        Check if a process is running by name.
+        """
+        import psutil
+        for proc in psutil.process_iter():
+            try:
+                if process_name.lower() in proc.name().lower():
+                    return True
+            except psutil.ZombieProcess as e:
+                self.logger.LogRecord(e)
+            except psutil.NoSuchProcess:
+                pass
+            except psutil.AccessDenied as e:
+                self.logger.LogRecord(e)
         return False
 
     @commands.command(name='Source')

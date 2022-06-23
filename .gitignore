@@ -3,3 +3,6 @@
 .env.conf
 .conf
 .idea
+
+# Logging
+ipington.log

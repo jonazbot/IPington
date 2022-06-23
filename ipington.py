@@ -176,7 +176,7 @@ class Functions(commands.Cog):
 
 if __name__ == '__main__':
     # Load .conf file.
-    config = dotenv_values('.env.conf')
+    config = dotenv_values('.conf')
 
     # Setup IPington.
     ipington: IPington = IPington(command_prefix=config['PREFIX'],

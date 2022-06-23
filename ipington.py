@@ -153,16 +153,15 @@ class Functions(commands.Cog):
         if self._is_process_running('minecraft_server'):
             await ctx.send('Minecraft server is already running.')
         else:
-            await ctx.send('Starting Minecraft server...')
             try:
                 if os.path.exists(self.bot.server_path):
                     if os.name == 'posix' or os.name == 'nt':
                         subprocess.Popen(
-                            f'{"nohup java" if os.name == "posix" else "java"} -Xms{self.bot.xms} -Xmx{self.bot.xms} -jar {self.bot.jar_path}',
-                            stdin=subprocess.PIPE,
-                            shell=True,
-                            cwd=self.bot.server_path)
-                        await ctx.send(f'Minecraft server is ready at ***{self._find_server_ip()}:{self.bot.server_port}***')
+                            ['java', f'-Xms{self.bot.xms}', f'-Xmx{self.bot.xms}', '-jar', f'{self.bot.jar_path}'],
+                            cwd=self.bot.server_path,
+                            shell=False)
+                        await ctx.send(f'Minecraft server is starting and can be accessed at:\n'
+                                       f'***{self._find_server_ip()}:{self.bot.server_port}***')
                     else:
                         logging.warning(f'Unable to recognize OS: {os.name}')
                         raise OSError

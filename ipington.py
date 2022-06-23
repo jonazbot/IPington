@@ -151,12 +151,17 @@ class Functions(commands.Cog):
             try:
                 if os.path.exists(self.bot.server_path):
                     if os.path.exists(self.bot.jar_path):
-                        subprocess.call(
-                            f'cd {self.bot.server_path}'  # Change into the server directory
-                            f' && nohup java - Xms2G - Xmx8G - jar {self.bot.jar_path}'  # Start the server quietly 
-                            ' & > / dev / null &',  # Direct server output to garbage collection
-                            shell=True)  # This option introduces a code injection vulnerability to the system.
-                        await ctx.send(f'Minecraft server is ready @ {self._find_server_ip()}')
+                        if os.name == 'posix':
+                            subprocess.call(
+                                f'cd {self.bot.server_path}'  # Change into the server directory
+                                f' && nohup java - Xms2G - Xmx8G - jar {self.bot.jar_path}'  # Start the server quietly 
+                                ' & > / dev / null &',  # Direct server output to garbage collection
+                                shell=True)  # This option introduces a code injection vulnerability to the system.
+                            await ctx.send(f'Minecraft server is ready @ {self._find_server_ip()}')
+                        elif os.name == 'nt':
+                            raise OSError  # TODO: Add windows server call
+                        else:
+                            raise OSError
                     else:
                         raise FileNotFoundError
                 else:

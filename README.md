@@ -2,6 +2,7 @@
 
 IPington is a simple Discord-bot for automating remote management of a self-hosted Minecraft server.
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f7a38ddcd4f646b38b43480062c36df3)](https://www.codacy.com/gh/jonazbot/IPington/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jonazbot/IPington&amp;utm_campaign=Badge_Grade)
 
 ## Setup
 
@@ -35,27 +36,23 @@ TOKEN=H3R3I$AS@mP1eD1$c0rDT0k3n.1tSh0u1d8eEx4C7Ly59[hAR@CT3r$10N6
 
 The bot can be started from a terminal with the following command:
 
-
-#### Linux/Mac
+### Linux/Mac
 
 ```sh
 ./ipington.py
 ```
 
-
-#### Linux
+### Linux
 
 ```sh
 python3 ipington.py
 ```
 
-
-#### Windows, Linux, and Mac
+### Windows, Linux, and Mac
 
 ```sh
 python ipington.py
 ```
-
 
 ## Discord message commands
 

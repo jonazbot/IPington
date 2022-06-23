@@ -1,5 +1,7 @@
 # IPington, the Discord bot
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8d56cf56ec1c48868db705f510c5de69)](https://app.codacy.com/gh/jonazbot/IPington?utm_source=github.com&utm_medium=referral&utm_content=jonazbot/IPington&utm_campaign=Badge_Grade_Settings)
+
 IPington is a simple Discord bot for automating remote management of a self-hosted Minecraft server running on Linux. Through a private channel members can send commands to the bot to:
  - Check the Minecraft version currently running on the server
  - Check if the server is currently running

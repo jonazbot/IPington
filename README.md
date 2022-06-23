@@ -21,7 +21,7 @@ pip install discord.py
 MINECRAFT_VERSION=1.18.1
 SERVER_PORT=25565
 PATH_TO_SERVER=/path/to/server
-PATH_TO_JAR=minecraft_server.${MINECRAFT_VERSION}.jar
+SERVER_EXEC=minecraft_server.${MINECRAFT_VERSION}.jar
 
 # Bot settings
 PREFIX=!

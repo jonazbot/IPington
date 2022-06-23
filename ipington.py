@@ -111,8 +111,9 @@ class Functions(commands.Cog):
         cmd = '**Commands**       ***Description*** \n' \
               f'`{self.bot.command_prefix}Info`         *Ask IPington to list the bot commands.*\n' \
               f'`{self.bot.command_prefix}IP`           *Ask IPington to leak the current Minecraft server IP.*\n' \
-              f'`{self.bot.command_prefix}Version`      *Ask IPington to leak the current Minecraft server version.*\n' \
-              f'`{self.bot.command_prefix}Minecraft`    *Ask IPington to start the Minecraft server.*'
+              f'`{self.bot.command_prefix}Version`      *Ask IPington for the current Minecraft server version.*\n' \
+              f'`{self.bot.command_prefix}Minecraft`    *Ask IPington to start the Minecraft server.*' \
+              f'`{self.bot.command_prefix}Source`       *Ask IPington for a link to the source code.*'
         await ctx.send(cmd)
 
     @commands.command(name='IP')

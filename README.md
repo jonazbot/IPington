@@ -8,7 +8,6 @@ IPington is a simple Discord-bot for automating remote management of a self-host
 
 IPington requires Python 3 to run.
 
-
 ### Install dependencies
 
 ```sh
@@ -30,7 +29,6 @@ XMX=8G
 PREFIX=!
 TOKEN=H3R3I$AS@mP1eD1$c0rDT0k3n.1tSh0u1d8eEx4C7Ly59[hAR@CT3r$10N6
 ```
-
 
 ## Run IPington
 

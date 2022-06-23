@@ -78,6 +78,13 @@ class Functions(commands.Cog):
             return True
         return False
 
+    @commands.command(name='Source')
+    async def source(self, ctx):
+        """
+        Ask IPington to share a link to the source code.
+        """
+        await ctx.send(f'https://github.com/jonazbot/IPington')
+
     @commands.command(name='Info')
     async def info(self, ctx):
         """

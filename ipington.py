@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import logging
 import os
 import subprocess
 import urllib.request
@@ -37,12 +38,13 @@ class IPington(commands.Bot):
                  path_to_jar: str,
                  server_port: str):
         self.prefix = command_prefix
+        super(IPington, self).__init__(command_prefix=self.prefix)
         self.minecraft_version = server_version
         self.server_path = path_to_server
         self.jar_path = path_to_jar
         self.server_port = server_port
-        super(IPington, self).__init__(command_prefix=self.prefix)
-        self.add_cog(Functions(self))
+        self.logger = logging.getLogger(__name__)
+        self.add_cog(Functions(self, self.logger))
 
 
 class Functions(commands.Cog):
@@ -59,8 +61,9 @@ class Functions(commands.Cog):
         The bot is the :class: `discord.commands.Bot` or any subclass (like IPington)
         which to register this group of commands.
     """
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: commands.Bot, logger: logging):
         self.bot = bot
+        self.logger = logger
 
     @staticmethod
     def find_server_ip() -> str:

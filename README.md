@@ -1,21 +1,21 @@
 # IPington, the Discord bot
 
-IPington is a simple Discord bot for automating remote management of a self-hosted Minecraft server running on Linux. Through a private channel members can send commands to the bot to:
- - Check the Minecraft version currently running on the server
- - Check if the server is currently running
- - Start the server if it is not currently running
- - Leak the current server IP and port number
- - Request a link to the source code repository
+IPington is a simple Discord-bot for automating remote management of a self-hosted Minecraft server.
+
 
 ## Setup
+
 IPington requires Python 3 to run.
 
+
 ### Install dependencies
+
 ```sh
 pip install discord.py
 ```
 
 ### Editing the .conf file
+
 ```sh
 # Server settings
 MINECRAFT_VERSION=1.18.1
@@ -30,23 +30,34 @@ PREFIX=!
 TOKEN=H3R3I$AS@mP1eD1$c0rDT0k3n.1tSh0u1d8eEx4C7Ly59[hAR@CT3r$10N6
 ```
 
+
 ## Run IPington
 
 The bot can be started from a terminal with the following command:
 
+
+#### Linux/Mac
+
 ```sh
 ./ipington.py
 ```
-or
-```sh
-python ipington.py
-```
-or
+
+
+#### Linux
+
 ```sh
 python3 ipington.py
 ```
 
-## Commands
+
+#### Windows, Linux, and Mac
+
+```sh
+python ipington.py
+```
+
+
+## Discord message commands
 
 | **Commands** | ***Description***                                       |
 |--------------|---------------------------------------------------------|
@@ -55,4 +66,3 @@ python3 ipington.py
 | `!Version`   | *Post the current Minecraft server version.*            |
 | `!Minecraft` | *Start the Minecraft server.*                           |
 | `!Source`    | *Post a URL to repository for the source code.*         |
-

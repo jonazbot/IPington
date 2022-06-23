@@ -11,7 +11,7 @@ from discord.ext import commands
 
 class IPington(commands.Bot):
     """
-    IPington, a Discord bot for automating a self-hosted Minecraft server running on Linux.
+    A Discord bot for automating a self-hosted Minecraft server.
 
     This class is a subclass of :class:`discord.commands.Bot`.
 
@@ -35,6 +35,7 @@ class IPington(commands.Bot):
     xmx
         The maximum amount of memory the server is allowed
     """
+
     def __init__(self,
                  command_prefix: str,
                  server_version: str,
@@ -106,7 +107,7 @@ class Functions(commands.Cog):
         """
         Ask IPington to share a link to the source code.
         """
-        await ctx.send(f'https://github.com/jonazbot/IPington')
+        await ctx.send('https://github.com/jonazbot/IPington')
 
     @commands.command(name='Info')
     async def info(self, ctx):

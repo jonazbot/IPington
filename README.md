@@ -40,7 +40,7 @@ The bot can be started from a terminal with the following command:
 ./ipington.py
 ```
 
-### Linux
+or
 
 ```sh
 python3 ipington.py

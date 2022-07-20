@@ -37,6 +37,7 @@ class IPington(commands.Bot):
     """
 
     def __init__(self,
+                 server_name: str,
                  command_prefix: str,
                  server_version: str,
                  server_path: str,
@@ -152,7 +153,8 @@ class Functions(commands.Cog):
             it is not currently running.
         """
         if self._is_process_running('minecraft_server'):
-            await ctx.send('Minecraft server is already running.')
+            await ctx.send('Minecraft server is currently running.')
+            await self.ip(ctx)
         else:
             try:
                 if os.path.exists(self.bot.server_path):
@@ -180,7 +182,8 @@ if __name__ == '__main__':
     config = dotenv_values('.conf')
 
     # Setup IPington.
-    ipington: IPington = IPington(command_prefix=config['PREFIX'],
+    ipington: IPington = IPington(server_name=config['NAME'],
+                                  command_prefix=config['PREFIX'],
                                   server_version=config['MINECRAFT_VERSION'],
                                   server_path=config['PATH_TO_SERVER'],
                                   server_exec=config['SERVER_EXEC'],

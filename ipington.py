@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import logging
 import os
+import psutil
+import logging
 import subprocess
 import urllib.request
 from dotenv import dotenv_values
@@ -21,6 +22,8 @@ class IPington(commands.Bot):
         The command prefix is the string any message intended as a command must start with
         for the bot to execute the following message as a command.
             Example: '!'
+    server_name
+        The name of the server IPington is managing.
     server_version
         The version of the server IPington is managing.
             Example: '1.18.1'
@@ -37,8 +40,8 @@ class IPington(commands.Bot):
     """
 
     def __init__(self,
-                 server_name: str,
                  command_prefix: str,
+                 server_name: str,
                  server_version: str,
                  server_path: str,
                  server_exec: str,
@@ -46,6 +49,7 @@ class IPington(commands.Bot):
                  xms: str,
                  xmx: str):
         super(IPington, self).__init__(command_prefix=command_prefix)
+        self.server_name = server_name
         self.minecraft_version = server_version
         self.server_path = server_path
         self.jar_path = server_exec
@@ -90,7 +94,6 @@ class Functions(commands.Cog):
         """
         Check if a process is running by name.
         """
-        import psutil
         for proc in psutil.process_iter():
             try:
                 if process_name.lower() in proc.name().lower():
@@ -117,10 +120,10 @@ class Functions(commands.Cog):
         """
         cmd = '**Commands**       ***Description*** \n' \
               f'`{self.bot.command_prefix}Info`         *Ask IPington to list the bot commands.*\n' \
-              f'`{self.bot.command_prefix}IP`           *Ask IPington to leak the current Minecraft server IP.*\n' \
+              f'`{self.bot.command_prefix}IP`           *Ask IPington to leak the current server IP.*\n' \
               f'`{self.bot.command_prefix}Version`      *Ask IPington for the current Minecraft server version.*\n' \
-              f'`{self.bot.command_prefix}Minecraft`    *Ask IPington to start the Minecraft server.*\n' \
-              f'`{self.bot.command_prefix}Source`       *Ask IPington for a link to the source code.*'
+              f'`{self.bot.command_prefix}Minecraft`    *Ask IPington to start {self.bot.server_name}.*\n' \
+              f"`{self.bot.command_prefix}Source`       *Ask IPington for a link to it's source code."
         await ctx.send(cmd)
 
     @commands.command(name='IP')
@@ -129,7 +132,7 @@ class Functions(commands.Cog):
         Ask IPington to leak the current Minecraft server IP.
         """
         try:
-            await ctx.send(f'Minecraft server address: ***{self._find_server_ip()}:{self.bot.server_port}***')
+            await ctx.send(f'{self.bot.server_name} server address: ***{self._find_server_ip()}:{self.bot.server_port}***')
         except Exception:
             await ctx.send('IP service is currently not available.')
             logging.warning('IP address leak failed')
@@ -139,7 +142,7 @@ class Functions(commands.Cog):
         """
         Ask IPington to leak the current Minecraft server version.
         """
-        await ctx.send(f'The minecraft server is currently running version: ***{self.bot.minecraft_version}***')
+        await ctx.send(f'{self.bot.server_name} is currently running version: ***{self.bot.minecraft_version}***')
 
     @commands.command(name='Minecraft')
     async def minecraft(self, ctx):
@@ -153,7 +156,7 @@ class Functions(commands.Cog):
             it is not currently running.
         """
         if self._is_process_running('minecraft_server'):
-            await ctx.send('Minecraft server is currently running.')
+            await ctx.send(f'{self.bot.server_name} is currently running.')
             await self.ip(ctx)
         else:
             try:
@@ -163,7 +166,7 @@ class Functions(commands.Cog):
                             ['java', f'-Xms{self.bot.xms}', f'-Xmx{self.bot.xms}', '-jar', f'{self.bot.jar_path}'],
                             cwd=self.bot.server_path,
                             shell=False)
-                        await ctx.send(f'Minecraft server is starting and can be accessed at:\n'
+                        await ctx.send(f'{self.bot.server_name} is starting and can be accessed at:\n'
                                        f'***{self._find_server_ip()}:{self.bot.server_port}***')
                     else:
                         logging.warning(f'Unable to recognize OS: {os.name}')
